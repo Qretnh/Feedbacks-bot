@@ -1,0 +1,8 @@
+1. Скопировать всё на сервер (git clone, rsync и т.п.)
+2. Убедиться, что docker и docker-compose установлены
+3. Отредактировать .env
+4. провести миграции.
+alembic upgrade head
+4. docker-compose up
+5. Логи смотреть через:
+   docker-compose logs -f bot

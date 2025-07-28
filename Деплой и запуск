@@ -1,0 +1,10 @@
+1. Скопировать всё на сервер (git clone, rsync и т.п.)
+2. установить docker и docker-compose
+3. Отредактировать .env
+4. провести миграции.
+pip install alembic
+pip install psycopg2-binary
+alembic upgrade head
+4. docker-compose up -d --build
+5. Логи смотреть через:
+   docker-compose logs

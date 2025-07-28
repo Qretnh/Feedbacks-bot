@@ -1,0 +1,52 @@
+### Python ###
+# Файлы, созданные интерпретатором
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Временные файлы и кеши
+*.swp
+*.bak
+*.tmp
+*.temp
+
+# Логи и дампы
+*.log
+*.sqlite
+*.sqlite3
+
+# Файлы окружения и настроек
+.env
+.venv/
+venv/
+env/
+ENV/
+
+# PyInstaller
+build/
+dist/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+# Тестовые покрытия и профили
+.coverage
+htmlcov/
+.pytest_cache/
+prof/
+
+# IDE и редакторы
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db

@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     FEEDBACK_CHAT_ID: str = Field(..., env="FEEDBACK_CHAT_ID")
     SUPPORT_CHAT_ID: str = Field(..., env="SUPPORT_CHAT_ID")
     ADMIN_IDS: str = Field(..., env="ADMIN_IDS")
+    PAGE_SIZE: int = Field(..., env="PAGE_SIZE")
 
     @property
     def admin_ids(self) -> List[int]:

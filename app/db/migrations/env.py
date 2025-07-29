@@ -7,6 +7,11 @@ from app.db.base import Base
 from app.db.models.FAQ import FAQ
 from app.db.models.feedback import Feedback
 from app.db.models.feedback_topic import Topic
+from app.db.models.statistics import (
+    BroadcastStatistics,
+    FAQStatistics,
+    FeedbackStatistics,
+)
 from app.db.models.user import User
 
 # this is the Alembic Config object, which provides

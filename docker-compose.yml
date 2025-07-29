@@ -12,6 +12,7 @@ services:
       - FEEDBACK_CHAT_ID
       - SUPPORT_CHAT_ID
       - ADMIN_IDS
+      - PAGE_SIZE
     depends_on:
       postgres:
         condition: service_healthy

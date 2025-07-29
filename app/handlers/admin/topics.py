@@ -5,13 +5,62 @@ from aiogram.types import CallbackQuery, Message
 from fluentogram import TranslatorRunner
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.utils.db.topic import add_topic_to_feedback, delete_topic_from_feedback
+from app.keyboards.admin import admin_menu_topic_keyboard
+from app.utils.db.topic import (
+    add_topic_to_feedback,
+    delete_topic_from_feedback,
+    get_feedback_topics,
+)
 
 router = Router(name="Router for admin-feedback menu")
 
 
 class AdminTopics(StatesGroup):
     add_topic = State()
+
+
+@router.callback_query(F.data == "admin|topics|")
+async def admin_feedback_menu(
+    callback: CallbackQuery,
+    session: AsyncSession,
+    state: FSMContext,
+    i18n: TranslatorRunner,
+):
+    topics = await get_feedback_topics(session)
+    data = await state.get_data()
+    current_page = data.get("admin_topics_page", 0)
+
+    await callback.message.edit_text(
+        text=i18n.admin.choose.topic(),
+        reply_markup=admin_menu_topic_keyboard(topics, current_page),
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "admin_topics_next_page")
+async def admin_topics_next_page(
+    callback: CallbackQuery,
+    i18n: TranslatorRunner,
+    session: AsyncSession,
+    state: FSMContext,
+):
+    data = await state.get_data()
+    current_page = data.get("admin_topics_page", 0)
+    await state.update_data(admin_topics_page=current_page + 1)
+    await admin_feedback_menu(callback, session, state, i18n)
+
+
+@router.callback_query(F.data == "admin_topics_prev_page")
+async def admin_topics_prev_page(
+    callback: CallbackQuery,
+    i18n: TranslatorRunner,
+    session: AsyncSession,
+    state: FSMContext,
+):
+    data = await state.get_data()
+    current_page = data.get("admin_topics_page", 0)
+    await state.update_data(admin_topics_page=current_page - 1)
+    await admin_feedback_menu(callback, session, state, i18n)
 
 
 @router.callback_query(F.data == "admin|topic|new")

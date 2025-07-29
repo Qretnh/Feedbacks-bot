@@ -5,9 +5,11 @@ from aiogram.types import CallbackQuery, Message
 from fluentogram import TranslatorRunner
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.keyboards.admin import admin_menu_faq_keyboard
 from app.utils.db.faq import (
     add_question_to_faq,
     delete_question_from_faq,
+    get_faq_questions,
 )
 
 router = Router(name="Router for admin work")
@@ -16,6 +18,50 @@ router = Router(name="Router for admin work")
 class AdminFAQ(StatesGroup):
     enter_question = State()
     enter_answer = State()
+
+
+@router.callback_query(F.data == "admin|FAQ|")
+async def admin_faq_menu(
+    callback: CallbackQuery,
+    session: AsyncSession,
+    state: FSMContext,
+    i18n: TranslatorRunner,
+):
+    questions = await get_faq_questions(session)
+    data = await state.get_data()
+    current_page = data.get("admin_faq_page", 0)
+
+    await callback.message.edit_text(
+        text=i18n.admin.choose.faq(),
+        reply_markup=admin_menu_faq_keyboard(questions, current_page),
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "admin_faq_next_page")
+async def admin_faq_next_page(
+    callback: CallbackQuery,
+    i18n: TranslatorRunner,
+    session: AsyncSession,
+    state: FSMContext,
+):
+    data = await state.get_data()
+    current_page = data.get("admin_faq_page", 0)
+    await state.update_data(admin_faq_page=current_page + 1)
+    await admin_faq_menu(callback, session, state, i18n)
+
+
+@router.callback_query(F.data == "admin_faq_prev_page")
+async def admin_faq_prev_page(
+    callback: CallbackQuery,
+    i18n: TranslatorRunner,
+    session: AsyncSession,
+    state: FSMContext,
+):
+    data = await state.get_data()
+    current_page = data.get("admin_faq_page", 0)
+    await state.update_data(admin_faq_page=max(0, current_page - 1))
+    await admin_faq_menu(callback, session, state, i18n)
 
 
 @router.callback_query(F.data == "admin|FAQ|new")

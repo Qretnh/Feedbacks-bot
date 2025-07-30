@@ -36,6 +36,7 @@ async def main():
 
     translator_hub: TranslatorHub = create_translator_hub()
 
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, _translator_hub=translator_hub, skip_updates=True)
 
 

@@ -13,6 +13,7 @@ services:
       - SUPPORT_CHAT_ID
       - ADMIN_IDS
       - PAGE_SIZE
+      - IS_DEMO
     depends_on:
       postgres:
         condition: service_healthy

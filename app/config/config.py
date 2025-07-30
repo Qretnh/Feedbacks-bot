@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     SUPPORT_CHAT_ID: str = Field(..., env="SUPPORT_CHAT_ID")
     ADMIN_IDS: str = Field(..., env="ADMIN_IDS")
     PAGE_SIZE: int = Field(..., env="PAGE_SIZE")
+    IS_DEMO: int = Field(..., env="IS_DEMO")
 
     @property
     def admin_ids(self) -> List[int]:

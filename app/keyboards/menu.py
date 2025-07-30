@@ -2,6 +2,9 @@ from aiogram.types import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
 )
+from app.config.config import get_settings
+
+settings = get_settings()
 
 welcome = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -12,7 +15,7 @@ welcome = InlineKeyboardMarkup(
                 text="👨‍💼 Связь с менеджером", callback_data="to_manager"
             )
         ],
-        [InlineKeyboardButton(text="🛠 Возможности бота", callback_data="to_functions")],
+        [InlineKeyboardButton(text="🛠 Возможности бота", callback_data="to_functions")] * settings.IS_DEMO,
     ],
     resize_keyboard=True,
 )
